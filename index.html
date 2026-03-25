@@ -734,12 +734,12 @@ body.locked .main-wrapper { overflow:hidden; }
            SECCIÓN 1: HERO — SOBRE + FOTO + ÓVALO
            Ocupa el 100dvh completo de la pantalla
            ══════════════════════════════════════ -->
-      <div style="height:100dvh;display:flex;flex-direction:column;align-items:stretch;justify-content:center;box-sizing:border-box;">
+      <div style="height:100dvh;display:flex;flex-direction:column;box-sizing:border-box;">
 
         <!-- Placeholder oculto (antes tenía nombres/fecha sobre el sobre) -->
         <div id="heroAboveNames" style="display:none;"></div>
 
-        <section class="hero-section-wrapper" style="overflow:visible;padding:0;width:100%;">
+        <section class="hero-section-wrapper" style="overflow:visible;padding:0;width:100%;flex:1;display:flex;align-items:center;justify-content:center;">
 
           <!-- ── SOBRE CERRADO ── -->
           <!-- Visible al cargar la página. Al tocar → openEnvelope() -->
@@ -1072,13 +1072,9 @@ body.locked .main-wrapper { overflow:hidden; }
                   Su presencia es lo más importante para nosotros. Igualmente, si desean contribuir, estaremos eternamente agradecidos.
                 </p>
                 <!-- Botón desplegable datos bancarios -->
-                <button onclick="toggleBankInfo()" id="bankToggleBtn"
-                  style="background:transparent;border:1px solid var(--gold);border-radius:8px;color:var(--gold);
-                         padding:11px 24px;font-family:'Cinzel',serif;font-weight:600;font-size:.72rem;
-                         letter-spacing:.18em;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
-                         transition:background .15s,color .15s;touch-action:manipulation;position:relative;overflow:hidden;">
+                <button onclick="toggleBankInfo()" id="bankToggleBtn" class="btn-gold">
                   <span id="bankToggleLabel">VER DATOS DE TRANSFERENCIA</span>
-                  <span id="bankToggleArrow" style="transition:transform .35s;display:inline-block;">▾</span>
+                  <span id="bankToggleArrow" style="transition:transform .35s;display:inline-block;position:relative;z-index:1;">▾</span>
                 </button>
                 <!-- Datos bancarios colapsables -->
                 <div id="bankInfoPanel" style="max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1);margin-top:0;">
@@ -1686,7 +1682,7 @@ window.addEventListener('load', function() {
 
   /* Feedback táctil inmediato en todos los botones interactivos
      iOS no dispara :active de inmediato — usamos touchstart/end con clase .is-active */
-  var selectors = ['.btn-gold', '#submitBtn', '.counter-btn', '.carousel-btn', '.music-btn', '#envSeal'];
+  var selectors = ['.btn-gold', '#submitBtn', '.counter-btn', '.carousel-btn', '.music-btn', '#envSeal', '#bankToggleBtn'];
   selectors.forEach(function(sel) {
     document.querySelectorAll(sel).forEach(function(el) {
       el.addEventListener('touchstart',  function() { this.classList.add('is-active'); },    { passive: true });
