@@ -1237,9 +1237,9 @@ body.locked .main-wrapper { overflow:hidden; }
               <!-- Mensaje de confirmación (reemplaza al form tras enviar) -->
               <div id="submissionMessage" style="display:none;text-align:center">
                 <div class="mb-6">
-                  <div class="font-display text-lg mb-3" style="color:var(--gold)">✦ ¡Confirmación Recibida!</div>
-                  <p class="font-body" style="color:var(--cream-dim);margin-bottom:16px;font-style:italic">
-                    Gracias por confirmar tu asistencia. Tu información ha sido registrada correctamente.
+                  <div class="font-display text-lg mb-3" style="color:var(--gold)">✦ Respuesta recibida</div>
+                  <p id="submissionText" class="font-body" style="color:var(--cream-dim);margin-bottom:16px;font-style:italic">
+                    ¡Gracias por confirmar tu asistencia! ¡Esperamos tu presencia en el evento!
                   </p>
                 </div>
                 <button type="button" class="btn-gold" onclick="resetForm()">
@@ -1515,11 +1515,9 @@ function renderGuestsInfo() {
     return `<div class='guest-card'>
       <div class='guest-card-title'>Invitado ${i + 1}</div>
       <div class='mb-3'>
-        <label class='font-elegant block mb-2 text-xs' style='color:var(--cream-dim)'>Nombre</label>
-        <input type='text' class='form-input' placeholder='Nombre del invitado' value='${g.name}' onchange='updateGuestData(${i},"name",this.value)'${dis2}>
+        <input type='text' class='form-input' placeholder='${i === 0 ? 'Tu nombre' : 'Nombre del invitado'}' value='${g.name}' onchange='updateGuestData(${i},"name",this.value)'${dis2}>
       </div>
       <div>
-        <label class='font-elegant block mb-2 text-xs' style='color:var(--cream-dim)'>Restricciones</label>
         <div class='grid grid-cols-2 gap-2'>
           ${['vegetarian:Vegetariano','vegan:Vegano','glutenFree:Sin gluten','hasAllergies:Alergias'].map(s => {
             const [k, lbl] = s.split(':');
@@ -1572,6 +1570,16 @@ async function handleSubmit(e) {
   if (!name) return void showToast('Por favor ingresa tu nombre.');
   if (!formState.willAttend) formState.guestsData[0].name = name;
 
+  // Validar que todos los invitados tengan nombre
+  if (formState.willAttend) {
+    for (let i = 0; i < formState.guestsData.length; i++) {
+      if (!formState.guestsData[i].name.trim()) {
+        const label = i === 0 ? 'tu nombre' : 'el nombre del invitado ' + (i + 1);
+        return void showToast('Por favor ingresa ' + label + '.');
+      }
+    }
+  }
+
   isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.innerHTML = '<span class="spinner"></span>Enviando...';
@@ -1601,7 +1609,12 @@ async function handleSubmit(e) {
     const d = await r.json();
     if (d.success) {
       formSubmitted = true;
-      showToast('¡Gracias por confirmar tu asistencia!');
+      const msgEl = document.getElementById('submissionText');
+      if (msgEl) {
+        msgEl.textContent = formState.willAttend
+          ? '¡Gracias por confirmar tu asistencia! ¡Esperamos tu presencia en el evento!'
+          : 'Lamentamos no contar con tu presencia. Muchas gracias por avisarnos.';
+      }
       showFormSubmissionMessage();
     } else {
       showToast('Error al enviar. Intente de nuevo.');
