@@ -348,6 +348,12 @@ html, body {
 .btn-gold:active::before, .btn-gold.is-active::before { opacity:1; }
 .btn-gold:focus { outline:none; }
 
+/* El botón de datos bancarios no cambia de tamaño al presionar */
+#bankToggleBtn:active, #bankToggleBtn.is-active {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 /* Estado "enviando" — deshabilita visualmente el botón */
 .btn-sending, .btn-sending:hover {
   color: var(--gold)!important; transform:none!important;
@@ -748,7 +754,6 @@ body.locked .main-wrapper { overflow:hidden; }
               <div class="env-flap-clip" id="envFlap"></div>
               <img class="env-seal" id="envSeal" data-asset="Seal.png" alt="Sello MJ">
               <div class="env-hint" id="envHint">
-                <span class="env-hint-top">— CORDIALMENTE INVITADOS —</span>
                 ✦ &nbsp; TOCA PARA ABRIR &nbsp; ✦
               </div>
               <div class="letter-reveal" id="letterReveal" style="height:0;overflow:hidden;"></div>
@@ -784,7 +789,7 @@ body.locked .main-wrapper { overflow:hidden; }
             </div>
           </div>
 
-          <div style="height:50px;"></div>
+          <div style="height:25px;"></div>
         </div>
 
       </div><!-- /hero 100dvh -->
@@ -1113,11 +1118,11 @@ body.locked .main-wrapper { overflow:hidden; }
             <div style="border-radius:999px;border:1px solid rgba(201,168,76,.35);background:linear-gradient(180deg,rgba(34,8,16,.82) 0%,rgba(26,5,9,.82) 100%);box-shadow:0 0 0 5px rgba(201,168,76,.07),0 20px 60px rgba(0,0,0,.6);position:relative;overflow:hidden;padding:7rem 3.2rem;">
               <div style="position:absolute;inset:10px;border-radius:999px;border:1px solid rgba(201,168,76,.18);pointer-events:none;"></div>
               <div style="position:relative;z-index:2;text-align:center;">
-                <p class="font-cinzel text-xs tracking-widest mb-3" style="color:var(--gold-dark)">— DETALLES DE TRANSFERENCIA —</p>
+                <p class="font-cinzel text-xs tracking-widest mb-3" style="color:var(--gold-dark)">— TRANSFERENCIA —</p>
                 <h2 class="font-section-title text-2xl md:text-3xl mb-4" style="color:var(--gold);font-size:clamp(1.8rem,5.5vw,2.25rem)">MESA DE REGALOS</h2>
                 <div class="art-deco-line mb-6"></div>
                 <p class="font-body text-base mb-8" style="color:var(--cream-dim);font-style:italic">
-                  Su presencia es lo más importante para nosotros. Igualmente, si desean contribuir, estaremos eternamente agradecidos.
+                  El mejor regalo es compartir este día con ustedes. Si desean hacernos un obsequio, recibiremos con gratitud contribuciones en efectivo.
                 </p>
                 <!-- Botón desplegable datos bancarios -->
                 <button onclick="toggleBankInfo()" id="bankToggleBtn" class="btn-gold">
