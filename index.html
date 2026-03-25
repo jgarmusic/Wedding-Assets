@@ -1021,7 +1021,7 @@ body.locked .main-wrapper { overflow:hidden; }
                   </svg>
                 </div>
                 <h3 class="font-cinzel text-xs tracking-widest mb-3" style="color:var(--gold)">SOLO ADULTOS</h3>
-                <p class="font-body text-sm" style="color:var(--cream-dim)">Es una celebración pensada solo para adultos. Agradecemos tu comprensión.</p>
+                <p class="font-body text-sm" style="color:var(--cream-dim)">Agradecemos tu comprensión en que este evento está reservado únicamente para adultos.</p>
               </div>
 
               <!-- Estacionamiento -->
@@ -1052,7 +1052,7 @@ body.locked .main-wrapper { overflow:hidden; }
                   </svg>
                 </div>
                 <h3 class="font-cinzel text-xs tracking-widest mb-3" style="color:var(--gold)">ESTACIONAMIENTO</h3>
-                <p class="font-body text-sm" style="color:var(--cream-dim)">Amplio estacionamiento disponible y servicio de valet parking.</p>
+                <p class="font-body text-sm" style="color:var(--cream-dim)">Amplio estacionamiento disponible y valet parking gratuito.</p>
               </div>
 
               <!-- Área libre de humo -->
@@ -1102,7 +1102,7 @@ body.locked .main-wrapper { overflow:hidden; }
                   </svg>
                 </div>
                 <h3 class="font-cinzel text-xs tracking-widest mb-3" style="color:var(--gold)">CÓDIGO DE VESTIMENTA</h3>
-                <p class="font-body text-sm" style="color:var(--cream-dim)">Formal — pero sobre todo, siéntanse cómodos.</p>
+                <p class="font-body text-sm" style="color:var(--cream-dim)">Formal. Agradecemos evitar colores claros (blanco, beige).</p>
               </div>
 
             </div>
@@ -1237,7 +1237,7 @@ body.locked .main-wrapper { overflow:hidden; }
               <!-- Mensaje de confirmación (reemplaza al form tras enviar) -->
               <div id="submissionMessage" style="display:none;text-align:center">
                 <div class="mb-6">
-                  <div class="font-display text-lg mb-3" style="color:var(--gold)">✦ Respuesta recibida</div>
+                  <div class="font-display text-lg mb-3" style="color:var(--gold)">✔ Respuesta recibida</div>
                   <p id="submissionText" class="font-body" style="color:var(--cream-dim);margin-bottom:16px;font-style:italic">
                     ¡Gracias por confirmar tu asistencia! ¡Esperamos tu presencia en el evento!
                   </p>
@@ -1574,8 +1574,7 @@ async function handleSubmit(e) {
   if (formState.willAttend) {
     for (let i = 0; i < formState.guestsData.length; i++) {
       if (!formState.guestsData[i].name.trim()) {
-        const label = i === 0 ? 'tu nombre' : 'el nombre del invitado ' + (i + 1);
-        return void showToast('Por favor ingresa ' + label + '.');
+        return void showToast('Por favor ingresa el nombre de todos los invitados.');
       }
     }
   }
