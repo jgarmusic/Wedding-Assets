@@ -734,12 +734,12 @@ body.locked .main-wrapper { overflow:hidden; }
            SECCIÓN 1: HERO — SOBRE + FOTO + ÓVALO
            Ocupa el 100dvh completo de la pantalla
            ══════════════════════════════════════ -->
-      <div style="height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;box-sizing:border-box;overflow:hidden;">
+      <div style="height:100dvh;display:flex;flex-direction:column;align-items:stretch;justify-content:center;box-sizing:border-box;">
 
         <!-- Placeholder oculto (antes tenía nombres/fecha sobre el sobre) -->
         <div id="heroAboveNames" style="display:none;"></div>
 
-        <section class="hero-section-wrapper" style="overflow:visible;padding:0;width:100%;display:flex;align-items:center;justify-content:center;flex:1;">
+        <section class="hero-section-wrapper" style="overflow:visible;padding:0;width:100%;">
 
           <!-- ── SOBRE CERRADO ── -->
           <!-- Visible al cargar la página. Al tocar → openEnvelope() -->
@@ -1071,19 +1071,30 @@ body.locked .main-wrapper { overflow:hidden; }
                 <p class="font-body text-base mb-8" style="color:var(--cream-dim);font-style:italic">
                   Su presencia es lo más importante para nosotros. Igualmente, si desean contribuir, estaremos eternamente agradecidos.
                 </p>
-                <!-- Datos bancarios -->
-                <div class="space-y-3">
-                  <div class="p-4" style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;">
-                    <p class="font-cinzel text-xs tracking-widest mb-1" style="color:var(--gold-dark)">TITULAR DE LA CUENTA</p>
-                    <p class="font-body" style="color:var(--cream)">Marcela Alejandra Robledo Martínez</p>
-                  </div>
-                  <div class="p-4" style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;">
-                    <p class="font-cinzel text-xs tracking-widest mb-1" style="color:var(--gold-dark)">BANCO</p>
-                    <p class="font-body" style="color:var(--cream)">BBVA México</p>
-                  </div>
-                  <div class="p-4" style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;">
-                    <p class="font-cinzel text-xs tracking-widest mb-1" style="color:var(--gold-dark)">NÚMERO DE CUENTA</p>
-                    <p class="font-body" style="color:var(--cream)">1234567890</p>
+                <!-- Botón desplegable datos bancarios -->
+                <button onclick="toggleBankInfo()" id="bankToggleBtn"
+                  style="background:transparent;border:1px solid var(--gold);border-radius:8px;color:var(--gold);
+                         padding:11px 24px;font-family:'Cinzel',serif;font-weight:600;font-size:.72rem;
+                         letter-spacing:.18em;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+                         transition:background .15s,color .15s;touch-action:manipulation;position:relative;overflow:hidden;">
+                  <span id="bankToggleLabel">VER DATOS DE TRANSFERENCIA</span>
+                  <span id="bankToggleArrow" style="transition:transform .35s;display:inline-block;">▾</span>
+                </button>
+                <!-- Datos bancarios colapsables -->
+                <div id="bankInfoPanel" style="max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1);margin-top:0;">
+                  <div class="space-y-3" style="margin-top:1.25rem;">
+                    <div class="p-4" style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;">
+                      <p class="font-cinzel text-xs tracking-widest mb-1" style="color:var(--gold-dark)">TITULAR DE LA CUENTA</p>
+                      <p class="font-body" style="color:var(--cream)">Marcela Alejandra Robledo Martínez</p>
+                    </div>
+                    <div class="p-4" style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;">
+                      <p class="font-cinzel text-xs tracking-widest mb-1" style="color:var(--gold-dark)">BANCO</p>
+                      <p class="font-body" style="color:var(--cream)">BBVA México</p>
+                    </div>
+                    <div class="p-4" style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;">
+                      <p class="font-cinzel text-xs tracking-widest mb-1" style="color:var(--gold-dark)">NÚMERO DE CUENTA</p>
+                      <p class="font-body" style="color:var(--cream)">1234567890</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1200,8 +1211,8 @@ body.locked .main-wrapper { overflow:hidden; }
             <img data-asset="UsImg2.jpg" alt="" loading="lazy"
                  style="width:100%;height:580px;object-fit:cover;object-position:center top;display:block;
                         filter:brightness(.5) sepia(.2) saturate(.7);
-                        -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);
-                        mask-image:linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);">
+                        -webkit-mask-image:linear-gradient(to bottom, transparent 0%, black 32%, black 68%, transparent 100%);
+                        mask-image:linear-gradient(to bottom, transparent 0%, black 32%, black 68%, transparent 100%);">
             <!-- Monograma MJ centrado arriba — con más margen para que respire -->
             <div style="position:absolute;top:40px;left:50%;transform:translateX(-50%);z-index:10;width:120px;height:120px;">
               <img data-asset="Monog.png" alt="Monograma MJ" loading="lazy"
@@ -1227,7 +1238,7 @@ body.locked .main-wrapper { overflow:hidden; }
 
       <!-- ── FOOTER ── -->
       <footer class="py-8 px-4 text-center page-content" id="pageFooter" style="background:rgba(0,0,0,.5);border-top:1px solid rgba(201,168,76,.15)">
-        <p class="font-cinzel tracking-widest" style="color:rgba(201,168,76,.61);font-size:.715rem;">
+        <p class="font-cinzel tracking-widest" style="color:rgba(201,168,76,.85);font-size:.858rem;">
           M &amp; J &nbsp;·&nbsp; 08/08/26
         </p>
       </footer>
@@ -1709,6 +1720,25 @@ window.addEventListener('load', function() {
   checkDesktop();
   window.addEventListener('resize', checkDesktop);
 })();
+
+/* ════════════════════════════════════════
+   MESA DE REGALOS — TOGGLE DATOS BANCARIOS
+   ════════════════════════════════════════ */
+function toggleBankInfo() {
+  var panel  = document.getElementById('bankInfoPanel');
+  var arrow  = document.getElementById('bankToggleArrow');
+  var label  = document.getElementById('bankToggleLabel');
+  var isOpen = panel.style.maxHeight !== '0px' && panel.style.maxHeight !== '';
+  if (isOpen) {
+    panel.style.maxHeight = '0px';
+    arrow.style.transform = 'rotate(0deg)';
+    label.textContent     = 'VER DATOS DE TRANSFERENCIA';
+  } else {
+    panel.style.maxHeight = panel.scrollHeight + 'px';
+    arrow.style.transform = 'rotate(180deg)';
+    label.textContent     = 'OCULTAR DATOS';
+  }
+}
 
 init();
 </script>
