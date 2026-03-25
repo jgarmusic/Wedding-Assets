@@ -396,7 +396,7 @@ html, body {
 .music-btn {
   display: none; /* JS lo muestra con display:flex al abrir el sobre */
   position: fixed; bottom: 24px; right: 24px; z-index: 9999;
-  cursor: pointer; width: 44px; height: 44px; border-radius: 50%;
+  cursor: pointer; width: 48px; height: 48px; border-radius: 50%;
   background: rgba(13,4,8,.85); border: 1px solid rgba(201,168,76,.5);
   align-items: center; justify-content: center;
   box-shadow: 0 4px 16px rgba(0,0,0,.5);
@@ -1125,7 +1125,7 @@ body.locked .main-wrapper { overflow:hidden; }
                   El mejor regalo es compartir este día con ustedes. Si desean hacernos un obsequio, recibiremos con gratitud contribuciones en efectivo.
                 </p>
                 <!-- Botón desplegable datos bancarios -->
-                <button onclick="toggleBankInfo()" id="bankToggleBtn" class="btn-gold">
+                <button onclick="toggleBankInfo()" id="bankToggleBtn" class="btn-gold" style="min-width:280px;justify-content:center;">
                   <span id="bankToggleLabel">VER DATOS DE TRANSFERENCIA</span>
                   <span id="bankToggleArrow" style="transition:transform .35s;display:inline-block;position:relative;z-index:1;">▾</span>
                 </button>
@@ -1141,10 +1141,9 @@ body.locked .main-wrapper { overflow:hidden; }
                       <p class="font-body" style="color:var(--cream)">BBVA México</p>
                     </div>
                     <div class="p-4" style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;">
-                      <p class="font-cinzel text-xs tracking-widest mb-1" style="color:var(--gold-dark)">CLABE</p>
-                      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:2px;">
-                        <p class="font-body" style="color:var(--cream);letter-spacing:.05em;margin:0;" id="clabeNumber">012 580 00472218038 5</p>
-                        <button onclick="copyClabe()" id="copyBtn" style="flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.45);border-radius:6px;padding:5px 10px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .15s,border-color .15s;touch-action:manipulation;" title="Copiar CLABE">
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px;">
+                        <p class="font-cinzel text-xs tracking-widest" style="color:var(--gold-dark);margin:0;">CLABE</p>
+                        <button onclick="copyClabe()" id="copyBtn" style="flex-shrink:0;background:transparent;border:1px solid rgba(201,168,76,.45);border-radius:6px;padding:4px 9px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .15s,border-color .15s;touch-action:manipulation;" title="Copiar CLABE">
                           <svg id="copyIcon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="4" y="4" width="8" height="9" rx="1.2" stroke="#C9A84C" stroke-width="1.2"/>
                             <path d="M2 10V2.5A1.5 1.5 0 0 1 3.5 1H9" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round"/>
@@ -1152,6 +1151,7 @@ body.locked .main-wrapper { overflow:hidden; }
                           <span id="copyLabel" class="font-cinzel" style="color:var(--gold);font-size:.5rem;letter-spacing:.12em;">COPIAR</span>
                         </button>
                       </div>
+                      <p class="font-body" style="color:var(--cream);letter-spacing:.05em;margin:0;" id="clabeNumber">012 580 00472218038 5</p>
                     </div>
                   </div>
                 </div>
