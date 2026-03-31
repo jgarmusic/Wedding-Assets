@@ -1193,11 +1193,11 @@ body.locked .main-wrapper { overflow:hidden; }
         <section class="py-16 px-4">
           <div class="max-w-2xl mx-auto">
             <div class="section-card p-8 md:p-12 relative">
-              <div class="text-center mb-6">
+              <div class="text-center mb-6" id="rsvpHeader">
                 <p class="font-cinzel text-xs tracking-widest mb-3" style="color:var(--gold-dark)">— TE ESPERAMOS —</p>
                 <h2 class="font-section-title text-2xl md:text-3xl" style="color:var(--gold);font-size:clamp(1.8rem,5.5vw,2.25rem)">CONFIRMA ASISTENCIA</h2>
               </div>
-              <div class="art-deco-line mb-8"></div>
+              <div class="art-deco-line mb-8" id="rsvpHeaderLine"></div>
 
               <div id="formContainer">
                 <form id="rsvpForm" onsubmit="handleSubmit(event)">
@@ -1246,7 +1246,18 @@ body.locked .main-wrapper { overflow:hidden; }
               <!-- Mensaje de confirmación (reemplaza al form tras enviar) -->
               <div id="submissionMessage" style="display:none;text-align:center">
                 <div class="mb-6">
-                  <div class="font-display text-lg mb-3" style="color:var(--gold)">✔ Respuesta recibida</div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:4px;">
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="24" r="21" stroke="#C9A84C" stroke-width="1.4" opacity=".4"/>
+                    <circle cx="24" cy="24" r="17" stroke="#C9A84C" stroke-width="1" opacity=".25"/>
+                    <polyline points="14,25 21,32 34,17" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="8" cy="24" r="1.5" fill="#C9A84C" opacity=".5"/>
+                    <circle cx="40" cy="24" r="1.5" fill="#C9A84C" opacity=".5"/>
+                    <circle cx="24" cy="8" r="1.5" fill="#C9A84C" opacity=".5"/>
+                    <circle cx="24" cy="40" r="1.5" fill="#C9A84C" opacity=".5"/>
+                  </svg>
+                  <div class="font-display text-lg" style="color:var(--gold)">Respuesta recibida</div>
+                </div>
                   <p id="submissionText" class="font-body" style="color:var(--cream-dim);margin-bottom:16px;font-style:italic">
                     ¡Gracias por confirmar tu asistencia! ¡Esperamos tu presencia en el evento!
                   </p>
@@ -1643,6 +1654,10 @@ async function handleSubmit(e) {
 function showFormSubmissionMessage() {
   document.getElementById('rsvpForm').style.display        = 'none';
   document.getElementById('submissionMessage').style.display = 'block';
+  var h = document.getElementById('rsvpHeader');
+  var l = document.getElementById('rsvpHeaderLine');
+  if (h) h.style.display = 'none';
+  if (l) l.style.display = 'none';
 }
 
 /* Permite modificar la respuesta (reactiva el form) */
@@ -1655,6 +1670,10 @@ function resetForm() {
   };
   document.getElementById('rsvpForm').style.display         = 'block';
   document.getElementById('submissionMessage').style.display = 'none';
+  var h = document.getElementById('rsvpHeader');
+  var l = document.getElementById('rsvpHeaderLine');
+  if (h) h.style.display = '';
+  if (l) l.style.display = '';
   const b = document.getElementById('submitBtn');
   b.innerHTML = '<span>CONFIRMAR ASISTENCIA</span>';
   b.disabled  = false;
