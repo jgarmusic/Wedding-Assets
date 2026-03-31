@@ -969,8 +969,28 @@ body.locked .main-wrapper { overflow:hidden; }
               <div class="timeline-item">
                 <div class="timeline-content left section-card">
                   <div class="font-display text-xl mb-2" style="color:var(--gold)">——:——</div>
-                  <h3 class="font-cinzel text-sm mb-2" style="color:var(--cream);letter-spacing:.1em">Por confirmar</h3>
-                  <p class="font-body text-sm" style="color:var(--cream-dim)">Información próximamente</p>
+                  <h3 class="font-cinzel text-sm mb-2" style="color:var(--cream);letter-spacing:.1em">Cena</h3>
+                  <p class="font-body text-sm" style="color:var(--cream-dim)">Salón La Terraza</p>
+                  <p class="font-body text-xs mt-1" style="color:rgba(245,237,216,.45);font-style:italic">(dentro de Las Nubes)</p>
+                </div>
+                <div class="timeline-dot"></div>
+              </div>
+              <!-- Evento 4: derecha -->
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content right section-card">
+                  <div class="font-display text-xl mb-2" style="color:var(--gold)">——:——</div>
+                  <h3 class="font-cinzel text-sm mb-2" style="color:var(--cream);letter-spacing:.1em">Vals</h3>
+                  <p class="font-body text-sm" style="color:var(--cream-dim)">Salón La Terraza</p>
+                  <p class="font-body text-xs mt-1" style="color:rgba(245,237,216,.45);font-style:italic">(dentro de Las Nubes)</p>
+                </div>
+              </div>
+              <!-- Evento 5: izquierda -->
+              <div class="timeline-item">
+                <div class="timeline-content left section-card">
+                  <div class="font-display text-xl mb-2" style="color:var(--gold)">01:00</div>
+                  <h3 class="font-cinzel text-sm mb-2" style="color:var(--cream);letter-spacing:.1em">Despedida</h3>
+                  <p class="font-body text-sm" style="color:var(--cream-dim)">Salón La Terraza</p>
                   <p class="font-body text-xs mt-1" style="color:rgba(245,237,216,.45);font-style:italic">(dentro de Las Nubes)</p>
                 </div>
                 <div class="timeline-dot"></div>
@@ -1216,17 +1236,12 @@ body.locked .main-wrapper { overflow:hidden; }
                   <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:4px;">
                   <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="24" cy="24" r="21" stroke="#C9A84C" stroke-width="1.4" opacity=".4"/>
-                    <circle cx="24" cy="24" r="17" stroke="#C9A84C" stroke-width="1" opacity=".25"/>
                     <polyline points="14,25 21,32 34,17" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="8" cy="24" r="1.5" fill="#C9A84C" opacity=".5"/>
-                    <circle cx="40" cy="24" r="1.5" fill="#C9A84C" opacity=".5"/>
-                    <circle cx="24" cy="8" r="1.5" fill="#C9A84C" opacity=".5"/>
-                    <circle cx="24" cy="40" r="1.5" fill="#C9A84C" opacity=".5"/>
                   </svg>
                   <div class="font-display text-lg" style="color:var(--gold)">Respuesta recibida</div>
                 </div>
                   <p id="submissionText" class="font-body" style="color:var(--cream-dim);margin-bottom:16px;font-style:italic">
-                    ¡Gracias por confirmar tu asistencia! ¡Esperamos tu presencia en el evento!
+                    ¡Gracias por confirmar tu asistencia, esperamos tu presencia en el evento!
                   </p>
                 </div>
                 <button type="button" class="btn-gold" onclick="resetForm()">
@@ -1391,8 +1406,8 @@ function buildHotelSlide(h) {
       <div style="padding:14px 16px 0;">
         <h3 class="font-section-title text-sm mb-2" style="color:var(--gold);letter-spacing:.06em;min-height:0">${h.name}</h3>
         <div class="art-deco-line-plain"></div>
-        <p class="font-body text-sm mb-1 mt-2" style="color:var(--cream)">📍 A ${h.distance} minutos del salón</p>
-        <p class="font-body text-sm" style="color:var(--cream-dim)">📞 ${h.phone}</p>
+        <p class="font-body text-sm mb-1 mt-2" style="color:var(--cream-dim);font-style:italic">📍 A ${h.distance} minutos del salón</p>
+        <p class="font-body text-sm" style="color:var(--cream-dim);font-style:italic">📞 ${h.phone}</p>
       </div>
     </div>
   </div>`;
@@ -1598,7 +1613,7 @@ async function handleSubmit(e) {
       const msgEl = document.getElementById('submissionText');
       if (msgEl) {
         msgEl.textContent = formState.willAttend
-          ? '¡Gracias por confirmar tu asistencia! ¡Esperamos tu presencia en el evento!'
+          ? '¡Gracias por confirmar tu asistencia, esperamos tu presencia en el evento!'
           : 'Lamentamos no contar con tu presencia. Muchas gracias por avisarnos.';
       }
       showFormSubmissionMessage();
