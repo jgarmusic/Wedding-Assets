@@ -395,7 +395,7 @@ html, body {
 /* Botón flotante de música */
 .music-btn {
   display: none; /* JS lo muestra con display:flex al abrir el sobre */
-  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  position: fixed; bottom: calc(24px + env(safe-area-inset-bottom, 0px) + 16px); right: 24px; z-index: 9999;
   cursor: pointer; width: 48px; height: 48px; border-radius: 50%;
   background: rgba(13,4,8,.85); border: 1px solid rgba(201,168,76,.5);
   align-items: center; justify-content: center;
@@ -762,7 +762,7 @@ body.locked .main-wrapper { overflow:hidden; }
         </div>
 
         <!-- ── FOTO + ÓVALO — posición absoluta, no afecta el flex del sobre ── -->
-        <div id="heroPhotoBlock" style="opacity:0;pointer-events:none;transition:opacity 1s ease;position:absolute;top:0;left:0;right:0;bottom:0;width:100%;overflow:visible;">
+        <div id="heroPhotoBlock" style="opacity:0;pointer-events:none;transition:opacity 1s ease;position:absolute;top:0;left:0;right:0;width:100%;">
 
           <!-- Foto de portada (UsImg1.jpg) -->
           <div style="position:relative;width:100%;overflow:hidden;">
@@ -789,10 +789,13 @@ body.locked .main-wrapper { overflow:hidden; }
             </div>
           </div>
 
-          <div style="height:80px;"></div>
         </div>
 
       </div><!-- /hero 100dvh -->
+
+      <!-- ── ESPACIADOR: hace que las tiras arranquen DEBAJO de la foto+óvalo ── -->
+      <!-- Empuja el page-content hacia abajo exactamente lo que mide foto+óvalo -->
+      <div id="heroSpacer" style="height:clamp(750px,145vw,1050px);margin-top:-100dvh;display:none;"></div>
 
       <!-- ══════════════════════════════════════
            CONTENIDO PRINCIPAL (oculto hasta abrir sobre)
@@ -803,7 +806,7 @@ body.locked .main-wrapper { overflow:hidden; }
              SECCIÓN 2: TIRAS DE PELÍCULA + CUENTA REGRESIVA
              Dos strips animados (fwd y rev) con countdown flotante
              ══════════════════════════════════════ -->
-        <div style="position:relative;background:#111111;margin-top:3rem;">
+        <div style="position:relative;background:#111111;margin-top:4rem;margin-bottom:4rem;">
           <!-- Viñeta lateral para oscurecer los bordes de las tiras -->
           <div style="position:absolute;inset:0;z-index:15;pointer-events:none;
                       background:linear-gradient(to right, rgba(0,0,0,.72) 0%, transparent 22%, transparent 78%, rgba(0,0,0,.72) 100%);"></div>
@@ -815,23 +818,7 @@ body.locked .main-wrapper { overflow:hidden; }
             </div>
             <div style="background:#1a0d05;border-top:3px solid #3a1e08;border-bottom:3px solid #3a1e08;">
               <div class="film-strip-track" id="filmTrack">
-                <!-- 8 fotos reales + 8 clones para loop continuo -->
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg1.jpg" alt="Foto 1" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg2.jpg" alt="Foto 2" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg3.jpg" alt="Foto 3" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg4.jpg" alt="Foto 4" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg5.jpg" alt="Foto 5" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg6.jpg" alt="Foto 6" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg7.jpg" alt="Foto 7" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg8.jpg" alt="Foto 8" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg1.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg2.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg3.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg4.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg5.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg6.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg7.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg8.jpg" alt="" loading="lazy"></div></div>
+                <!-- Generado dinámicamente por buildFilmStrips() en JS -->
               </div>
             </div>
             <div style="height:24px;background:#1a1a1a;position:relative;overflow:hidden;display:flex;align-items:center;">
@@ -846,22 +833,7 @@ body.locked .main-wrapper { overflow:hidden; }
             </div>
             <div style="background:#1a0d05;border-top:3px solid #3a1e08;border-bottom:3px solid #3a1e08;">
               <div class="film-strip-track rev" id="filmTrack2">
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg5.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg6.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg7.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg8.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg1.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg2.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg3.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg4.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg5.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg6.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg7.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg8.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg1.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg2.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg3.jpg" alt="" loading="lazy"></div></div>
-                <div class="film-frame"><div class="film-frame-inner"><img data-asset="UsImg4.jpg" alt="" loading="lazy"></div></div>
+                <!-- Generado dinámicamente por buildFilmStrips() en JS -->
               </div>
             </div>
             <div style="height:24px;background:#1a1a1a;position:relative;overflow:hidden;display:flex;align-items:center;">
@@ -908,7 +880,7 @@ body.locked .main-wrapper { overflow:hidden; }
         <!-- ══════════════════════════════════════
              SECCIÓN 3: LUGAR DEL EVENTO
              ══════════════════════════════════════ -->
-        <section class="py-16 px-4">
+        <section class="pb-16 px-4" style="padding-top:0">
           <div class="max-w-sm mx-auto">
             <div class="arch-card pt-16 pb-10 px-8 md:px-12 text-center">
               <span class="gc-tr"></span>
@@ -1086,7 +1058,7 @@ body.locked .main-wrapper { overflow:hidden; }
                   </svg>
                 </div>
                 <h3 class="font-cinzel text-xs tracking-widest mb-3" style="color:var(--gold)">CÓDIGO DE VESTIMENTA</h3>
-                <p class="font-body text-sm" style="color:var(--cream-dim)">Formal. Agradecemos evitar colores claros (blanco, beige).</p>
+                <p class="font-body text-sm" style="color:var(--cream-dim)">Formal. Se agradece evitar vestidos en tonalidades claras.</p>
               </div>
 
             </div>
@@ -1302,6 +1274,70 @@ body.locked .main-wrapper { overflow:hidden; }
 /* ── URL BASE DE ASSETS (imágenes y música en GitHub) ── */
 const ASSETS = "https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/";
 
+/* Mezcla un array en orden aleatorio (Fisher-Yates) */
+function shuffleArray(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+/* ════════════════════════════════════════
+   GALERÍA — AUTO-DESCUBRIMIENTO DE FOTOS
+   Prueba UsImg1.jpg, UsImg2.jpg, UsImg3.jpg... en paralelo.
+   Se detiene en cuanto alguna no existe en el repo.
+   Para agregar fotos: solo sube UsImgN.jpg a GitHub. Sin tocar código.
+   ════════════════════════════════════════ */
+function probeImage(url) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload  = function() { resolve(true); };
+    img.onerror = function() { resolve(false); };
+    img.src = url;
+  });
+}
+
+async function discoverGalleryPhotos() {
+  var photos = [];
+  var i = 1;
+  while (true) {
+    var filename = 'UsImg' + i + '.jpg';
+    var exists = await probeImage(ASSETS + filename);
+    if (!exists) break;
+    photos.push(filename);
+    i++;
+  }
+  return photos;
+}
+
+/* Construye las tiras de película dinámicamente con orden aleatorio.
+   Duplica el set para el loop continuo (la animación CSS recorre el 50%). */
+async function buildFilmStrips() {
+  var track1 = document.getElementById('filmTrack');
+  var track2 = document.getElementById('filmTrack2');
+  if (!track1 || !track2) return;
+
+  var photos = await discoverGalleryPhotos();
+  if (photos.length === 0) return;
+
+  var order1 = shuffleArray(photos);
+  var order2 = shuffleArray(photos);
+
+  function makeFrames(list) {
+    return list.map(function(p) {
+      return '<div class="film-frame"><div class="film-frame-inner">' +
+             '<img src="' + ASSETS + p + '" alt="" loading="lazy">' +
+             '</div></div>';
+    }).join('');
+  }
+
+  // Duplicamos el set para el loop continuo (animación CSS usa -50%)
+  track1.innerHTML = makeFrames(order1) + makeFrames(order1);
+  track2.innerHTML = makeFrames(order2) + makeFrames(order2);
+}
+
 /* ── ESTADO GLOBAL DEL FORMULARIO RSVP ── */
 let formState = {
   willAttend:   true,
@@ -1352,6 +1388,9 @@ function openEnvelope() {
 
   // Paso 3: revela el contenido de la página (sections)
   setTimeout(function() {
+    // Muestra el espaciador para empujar las tiras debajo de la foto+óvalo
+    var sp = document.getElementById('heroSpacer');
+    if (sp) { sp.style.display = 'block'; }
     const pc = document.getElementById('pageContent');
     if (pc) { pc.style.opacity = '1'; pc.style.pointerEvents = 'auto'; }
     const pf = document.getElementById('pageFooter');
@@ -1724,6 +1763,8 @@ function buildSprockets() {
    INICIALIZACIÓN
    ════════════════════════════════════════ */
 async function init() {
+  // Construye las tiras de película con fotos en orden aleatorio
+  buildFilmStrips();
   // Construye el carrusel con clones para loop infinito
   buildCarousel();
   var ct = document.getElementById('carouselTrack');
