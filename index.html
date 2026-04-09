@@ -1274,23 +1274,6 @@ body.locked .main-wrapper { overflow:hidden; }
 /* ── URL BASE DE ASSETS (imágenes y música en GitHub) ── */
 const ASSETS = "https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/";
 
-/* ════════════════════════════════════════
-   GALERÍA — FOTOS DE LAS TIRAS DE PELÍCULA
-   Para agregar más fotos: sube el archivo al repo de GitHub
-   con el nombre UsImgN.jpg y agrega el nombre aquí.
-   ════════════════════════════════════════ */
-const GALLERY_PHOTOS = [
-  'UsImg1.jpg',
-  'UsImg2.jpg',
-  'UsImg3.jpg',
-  'UsImg4.jpg',
-  'UsImg5.jpg',
-  'UsImg6.jpg',
-  'UsImg7.jpg',
-  'UsImg8.jpg',
-  'UsImg9.jpg',
-];
-
 /* Mezcla un array en orden aleatorio (Fisher-Yates) */
 function shuffleArray(arr) {
   var a = arr.slice();
@@ -1301,18 +1284,49 @@ function shuffleArray(arr) {
   return a;
 }
 
+/* ════════════════════════════════════════
+   GALERÍA — AUTO-DESCUBRIMIENTO DE FOTOS
+   Prueba UsImg1.jpg, UsImg2.jpg, UsImg3.jpg... en paralelo.
+   Se detiene en cuanto alguna no existe en el repo.
+   Para agregar fotos: solo sube UsImgN.jpg a GitHub. Sin tocar código.
+   ════════════════════════════════════════ */
+function probeImage(url) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload  = function() { resolve(true); };
+    img.onerror = function() { resolve(false); };
+    img.src = url;
+  });
+}
+
+async function discoverGalleryPhotos() {
+  var photos = [];
+  var i = 1;
+  while (true) {
+    var filename = 'UsImg' + i + '.jpg';
+    var exists = await probeImage(ASSETS + filename);
+    if (!exists) break;
+    photos.push(filename);
+    i++;
+  }
+  return photos;
+}
+
 /* Construye las tiras de película dinámicamente con orden aleatorio.
    Duplica el set para el loop continuo (la animación CSS recorre el 50%). */
-function buildFilmStrips() {
+async function buildFilmStrips() {
   var track1 = document.getElementById('filmTrack');
   var track2 = document.getElementById('filmTrack2');
   if (!track1 || !track2) return;
 
-  var order1 = shuffleArray(GALLERY_PHOTOS);
-  var order2 = shuffleArray(GALLERY_PHOTOS);
+  var photos = await discoverGalleryPhotos();
+  if (photos.length === 0) return;
 
-  function makeFrames(photos) {
-    return photos.map(function(p) {
+  var order1 = shuffleArray(photos);
+  var order2 = shuffleArray(photos);
+
+  function makeFrames(list) {
+    return list.map(function(p) {
       return '<div class="film-frame"><div class="film-frame-inner">' +
              '<img src="' + ASSETS + p + '" alt="" loading="lazy">' +
              '</div></div>';
@@ -1320,11 +1334,8 @@ function buildFilmStrips() {
   }
 
   // Duplicamos el set para el loop continuo (animación CSS usa -50%)
-  var html1 = makeFrames(order1) + makeFrames(order1);
-  var html2 = makeFrames(order2) + makeFrames(order2);
-
-  track1.innerHTML = html1;
-  track2.innerHTML = html2;
+  track1.innerHTML = makeFrames(order1) + makeFrames(order1);
+  track2.innerHTML = makeFrames(order2) + makeFrames(order2);
 }
 
 /* ── ESTADO GLOBAL DEL FORMULARIO RSVP ── */
