@@ -14,6 +14,14 @@
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/Seal.png">
 
+  <!-- ── PRELOAD DE ASSETS CRÍTICOS ── -->
+  <!-- El sello se preload para que esté listo cuando aparece el sobre -->
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/Seal.png">
+  <!-- Foto de portada que aparece al abrir el sobre -->
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/UsImg8.jpg">
+  <!-- Primera foto del carrete (la más visible al inicio) -->
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/UsImg1.jpg">
+
   <!-- ── LIBRERÍAS EXTERNAS ── -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,700;1,6..96,400&family=Pinyon+Script&display=swap" rel="stylesheet">
@@ -777,7 +785,7 @@ body.locked .main-wrapper { overflow:hidden; }
               <div class="env-fold-left"></div>
               <div class="env-fold-right"></div>
               <div class="env-flap-clip" id="envFlap"></div>
-              <img class="env-seal" id="envSeal" data-asset="Seal.png" alt="Sello MJ">
+              <img class="env-seal" id="envSeal" src="https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/Seal.png" alt="Sello MJ">
               <div class="env-hint" id="envHint">
                 ✦ &nbsp; TOCA PARA ABRIR &nbsp; ✦
               </div>
@@ -1305,6 +1313,30 @@ body.locked .main-wrapper { overflow:hidden; }
 /* ── URL BASE DE ASSETS (imágenes y música en GitHub) ── */
 const ASSETS = "https://raw.githubusercontent.com/jgarmusic/Wedding-Assets/main/";
 
+/* ── PRE-CALENTAMIENTO DE CACHÉ EN SEGUNDO PLANO ──
+   Dispara la descarga de todas las fotos del carrete tan pronto como el navegador
+   está libre (requestIdleCallback / setTimeout fallback). Esto sucede ANTES de que
+   el usuario abra el sobre, así las imágenes ya están en caché cuando se muestran. */
+(function prewarmImages() {
+  var PREWARM = [
+    'Seal.png','UsImg1.jpg','UsImg2.jpg','UsImg3.jpg','UsImg4.jpg','UsImg5.jpg',
+    'UsImg6.jpg','UsImg7.jpg','UsImg8.jpg','UsImg9.jpg','UsImg10.jpg',
+    'UsImg11.jpg','UsImg12.jpg','UsImg13.jpg','UsImg14.jpg','UsImg15.jpg','UsImg16.jpg',
+  ];
+  function doPrewarm() {
+    PREWARM.forEach(function(fn) {
+      var img = new Image();
+      img.src = ASSETS + fn;
+      // No hacemos nada con el resultado — solo forzamos la descarga en caché
+    });
+  }
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(doPrewarm, { timeout: 2000 });
+  } else {
+    setTimeout(doPrewarm, 300);
+  }
+})();
+
 /* Mezcla un array en orden aleatorio (Fisher-Yates) */
 function shuffleArray(arr) {
   var a = arr.slice();
@@ -1331,14 +1363,28 @@ function probeImage(url) {
 }
 
 async function discoverGalleryPhotos() {
+  /* Prueba en lotes paralelos de BATCH_SIZE.
+     Si todo el lote falla → paramos. Si alguna falla dentro del lote
+     descartamos solo las que no existen y seguimos hasta el siguiente lote vacío.
+     Esto reduce el tiempo de descubrimiento de O(N) secuencial a O(ceil(N/BATCH)*1 req). */
+  var BATCH_SIZE = 6; // prueba 6 a la vez
   var photos = [];
-  var i = 1;
+  var startIdx = 1;
   while (true) {
-    var filename = 'UsImg' + i + '.jpg';
-    var exists = await probeImage(ASSETS + filename);
-    if (!exists) break;
-    photos.push(filename);
-    i++;
+    var batch = [];
+    for (var k = 0; k < BATCH_SIZE; k++) {
+      batch.push('UsImg' + (startIdx + k) + '.jpg');
+    }
+    var results = await Promise.all(batch.map(function(fn) {
+      return probeImage(ASSETS + fn).then(function(ok) { return ok ? fn : null; });
+    }));
+    var found = results.filter(Boolean);
+    photos = photos.concat(found);
+    // Si ninguna del lote existe, terminamos
+    if (found.length === 0) break;
+    // Si el lote no está completo, no hay más fotos
+    if (found.length < BATCH_SIZE) break;
+    startIdx += BATCH_SIZE;
   }
   return photos;
 }
